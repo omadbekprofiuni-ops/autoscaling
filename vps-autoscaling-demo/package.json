@@ -1,0 +1,10 @@
+{
+  "name": "vps-autoscaling-classroom-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A beginner-friendly VPS autoscaling classroom simulation",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>VPS Autoscaling — sinf demo</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Bosh sahifa"><span class="brand-mark">↗</span><span>Infra<span class="brand-light">Lab</span></span></a>
+      <div class="live-indicator"><span class="pulse"></span><span>Demo jonli</span><span class="divider"></span><span id="clock">--:--:--</span></div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span> BULUTLI INFRASTRUKTURA · AMALIY DEMO</div>
+        <h1>Yuk ortsa, tizim qanday javob beradi?</h1>
+        <p>Faol foydalanuvchilar sonini oshiring va avtomatik kengayishni kuzating.</p>
+      </section>
+
+      <section class="metrics" aria-label="Joriy ko‘rsatkichlar">
+        <article class="metric-card"><div class="metric-top"><span>Faol foydalanuvchilar</span><span class="metric-icon blue">♙</span></div><div class="metric-value"><strong id="active">0</strong><span id="capacity-label">/ 5</span></div><div class="meter"><span id="meter-fill"></span></div><div class="metric-foot"><span id="load-text">Sig‘im ichida</span><span id="percent">0%</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>Ilova nusxalari</span><span class="metric-icon purple">▦</span></div><div class="metric-value"><strong id="instance-count">1</strong><span class="metric-unit">ta instance</span></div><div class="instance-pips"><i class="on"></i><i id="pip-two"></i><span id="instance-state">Minimal holat</span></div><div class="metric-foot"><span>Har bir nusxa: 5 slot</span><span id="scale-state" class="green-text">Faol</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>VPS holati</span><span class="metric-icon green">⌘</span></div><div class="metric-value"><strong>1</strong><span class="metric-unit">ta VPS</span></div><div class="vps-note"><span class="dot green-dot"></span> Bitta serverda ishlayapti</div><div class="metric-foot"><span>CPU / RAM</span><span class="muted">demo uchun o‘zgarmaydi</span></div></article>
+      </section>
+
+      <section class="main-grid">
+        <article class="panel topology-panel">
+          <div class="panel-heading"><div><h2>Tizim arxitekturasi</h2><p>So‘rovning load balancer orqali yo‘li</p></div><span class="live-tag"><i></i> LIVE</span></div>
+          <div class="topology">
+            <div class="node user-node"><div class="node-symbol users-symbol"><span>♙</span><span>♙</span><span>♙</span></div><div class="node-title">Foydalanuvchilar</div><div class="node-sub"><b id="top-user-count">0</b> faol ulanish</div></div>
+            <div class="connector"><span class="connector-label">HTTP so‘rovlar</span><div class="connector-line"><i></i></div></div>
+            <div class="node lb-node"><div class="node-symbol lb-symbol">⇄</div><div class="node-title">Load balancer</div><div class="node-sub">Round-robin taqsimot</div><span class="node-chip">TALABNI TAQSIMLAYDI</span></div>
+            <div class="branch-connector"><div></div><i></i><i id="branch-two"></i></div>
+            <div class="instances-wrap"><div class="instance-node" id="instance-one"><div class="instance-head"><span class="instance-glyph">▣</span><span>App instance 01</span><span class="status-pill">Faol</span></div><div class="instance-bar"><span id="bar-one"></span></div><div class="instance-stats"><span><b id="users-one">0</b> / 5 foydalanuvchi</span><span id="percent-one">0%</span></div></div><div class="instance-node sleeping" id="instance-two"><div class="instance-head"><span class="instance-glyph">▣</span><span>App instance 02</span><span class="status-pill" id="status-two">Kutilmoqda</span></div><div class="instance-bar"><span id="bar-two"></span></div><div class="instance-stats"><span><b id="users-two">0</b> / 5 foydalanuvchi</span><span id="percent-two">—</span></div></div></div>
+          </div>
+          <div class="architecture-caption"><span class="caption-icon">i</span><span><b>Jarayon:</b> oltinchi faol foydalanuvchi keladi → autoscaler 2-instance rejimini yoqadi → load balancer yangi so‘rovlarni ikkala instance’ga navbat bilan yuboradi.</span></div>
+        </article>
+
+        <aside class="panel control-panel">
+          <div class="panel-heading"><div><h2>Demo boshqaruvi</h2><p>Yuklamani o‘zingiz sinab ko‘ring</p></div><span class="control-icon">⌁</span></div>
+          <div class="control-count"><span>Simulyatsiya qilinayotgan ulanishlar</span><strong id="control-count">0 <small>/ 5</small></strong></div>
+          <div class="control-buttons"><button class="button button-primary" id="add-user"><span>＋</span> Foydalanuvchi qo‘shish</button><button class="button button-secondary" id="remove-user">− Bittasini chiqarish</button></div>
+          <button class="reset-button" id="reset-demo">↺ &nbsp;Demoni boshidan boshlash</button>
+          <div class="threshold-box"><div class="threshold-title"><span class="threshold-icon">⚡</span><b>Autoscaling chegarasi</b></div><div class="threshold-row"><span>1 instance</span><span>5 foydalanuvchi</span></div><div class="threshold-rule"><span></span><i>6-kirish</i></div><div class="threshold-row threshold-after"><span>2 instance</span><b>10 foydalanuvchi</b></div></div>
+          <div class="notice"><span>✳</span><p><b>Sinab ko‘ring:</b> “Foydalanuvchi qo‘shish” tugmasini 6 marta bosing. Oltinchi bosishda ikkinchi instance ishga tushadi.</p></div>
+        </aside>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel activity-panel"><div class="panel-heading"><div><h2>Jarayon jurnali</h2><p>Load balancer va autoscaler xabarlari</p></div><button class="clear-log" id="clear-log">Tozalash</button></div><div class="log-list" id="log-list"><div class="log-empty">Hozircha hodisa yo‘q. Demo boshlanishini kutyapmiz.</div></div></article>
+        <article class="panel explanation-panel"><div class="explanation-title"><span class="explain-icon">?</span><h2>Bu nimani ko‘rsatadi?</h2></div><p>Demo faol ulanishlarni sanaydi. 6-foydalanuvchida <b>ilova sig‘imi</b> 5 dan 10 tagacha oshadi.</p><p class="truth-note"><span>!</span><span><b>Haqiqiy VPS resurslari avtomatik oshmaydi.</b> Ikkinchi app instance — dastur nusxasi; u xuddi shu VPS’da ishlaydi. CPU va RAM’ni oshirish uchun VPS planini o‘zgartirish yoki alohida serverlar kerak.</span></p></article>
+      </section>
+      <footer><span>InfraLab classroom demo</span><span>O‘quv simulyatsiyasi · real foydalanuvchilar o‘rniga demo ulanishlari ishlatiladi</span></footer>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
